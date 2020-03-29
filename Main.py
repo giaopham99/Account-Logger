@@ -11,17 +11,18 @@ else:
 if os.path.getsize('DO-NOT-DELETE.txt') == 0:
     newpass = input("Enter a master password: ")
     data.write(newpass)
+    data.close()
+    data = open('DO-NOT-DELETE.txt', mode='r+')
 
 # Ask for master pass
 password = None
 readpass = data.readline()
 while (readpass != password):
     password = input("What is the password? ")
-    if readpass == password:
-        command = displaymenu()
-    else:
+    if readpass != password:
         print("Wrong pass. Try again: ")
 
+command = displaymenu()
 while command != "e":
     if command == "a":
         retrieve_account()
@@ -33,3 +34,4 @@ while command != "e":
         update_account()
     else:
         print("Invalid Option")
+    command = displaymenu()
