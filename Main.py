@@ -1,14 +1,5 @@
 import os.path
-
-
-def displaymenu():
-    print("Pick an Option:")
-    print("(a) Retrieve an Account Log-in")
-    print("(b) Add an Account Log-in")
-    print("(c) Update Master Password")
-    print("(d) Update an Account")
-    return input()
-
+from Commands import *
 
 # Open file or create file to store info
 if os.path.isfile('DO-NOT-DELETE.txt'):
@@ -30,3 +21,15 @@ while (readpass != password):
         command = displaymenu()
     else:
         print("Wrong pass. Try again: ")
+
+while command != "e":
+    if command == "a":
+        retrieve_account()
+    elif command == "b":
+        addaccount()
+    elif command == "c":
+        updatemaster()
+    elif command == "d":
+        update_account()
+    else:
+        print("Invalid Option")
