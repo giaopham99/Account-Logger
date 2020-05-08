@@ -3,16 +3,25 @@ import os
 
 
 def displaymenu():
-    print("Pick an Option:")
+    print("\nPick an Option:")
     print("(a) Retrieve an Account Log-in")
     print("(b) Add an Account Log-in")
     print("(c) Update Master Password or shift")
     print("(d) Update an Account")
-    print("(e) Quit")
+    print("(e) List all Accounts")
+    print("(q) Quit")
     return input()
 
 
 def retrieve_account(file, shift):
+    file.seek(os.SEEK_SET, os.SEEK_END)  # find the end
+    end = file.tell()
+    file.seek(0)  # reset to beginning of file
+    file.readline()
+    file.readline()
+    pos = file.tell()
+    if pos == end:
+        return print("Error: You have no accounts logged.")
     account = input("What account are you looking for? ")
     line = search(file, account)
     if line == "0":
@@ -87,4 +96,8 @@ def updateUser():
 
 
 def updatePass():
+    return 0
+
+
+def listall():
     return 0
