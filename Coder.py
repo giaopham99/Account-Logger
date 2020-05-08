@@ -8,9 +8,9 @@ characters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l",
 def encrypt(code, shift):
     encrypted = ""
     for letter in code:
-        if letter == " ":
+        if letter == " ":  # convert spaces into delimiter
             encrypted = encrypted + "|"
-        else:
+        else:  # convert regular char
             location = (characters.index(letter) +
                         int(shift)) % len(characters)
             encrypted = encrypted + characters[location]
@@ -20,9 +20,9 @@ def encrypt(code, shift):
 def decrypt(code, shift):
     decrypted = ""
     for letter in code:
-        if letter == "|":
+        if letter == "|":  # convert delimiter to spaces
             decrypted = decrypted + " "
-        else:
+        else:  # convert regular char
             location = (characters.index(letter) - int(shift))
             if location < 0:
                 location = len(characters) - 1 + location
