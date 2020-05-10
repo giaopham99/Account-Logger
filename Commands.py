@@ -34,16 +34,32 @@ def retrieve_account(shift):
 
 
 def addaccount(shift):
-    with open("DO-NOT-DELETE.txt", "a") as data:
-        userInput = input("Nickname of Account: ")
-        userInput = encrypt(userInput.strip(), shift)
-        data.write(userInput + " ")
-        userInput = input("Username: ")
-        userInput = encrypt(userInput.strip(), shift)
-        data.write(userInput + " ")
-        userInput = input("Password: ")
-        userInput = encrypt(userInput.strip(), shift)
-        data.write(userInput + " \n")
+    account = input("Nickname of Account: ").strip()
+    found = ""
+    with open("DO-NOT-DELETE.txt", "r+") as data:
+        # check to see if account already exists
+        found = search(data, account)
+        if found == "0":
+            data.write(account + " ")
+            userInput = input("Username: ")
+            userInput = encrypt(userInput.strip(), shift)
+            data.write(userInput + " ")
+            userInput = input("Password: ")
+            userInput = encrypt(userInput.strip(), shift)
+            data.write(userInput + " \n")
+
+    if not found == "0":
+        print("Error: This account already exists.")
+        command = ""
+        while not command == "a" and not command == "b":
+            print("(a) Add a different account\n(b) Update this Account")
+            command = input()
+            if command == "a":
+                addaccount(shift)
+            elif command == "b":
+                update_account(account)
+            else:
+                print("Invalid Option")
 
 
 def findEnd(file):
@@ -119,8 +135,7 @@ def search(file, account):
 
 def update_account(account):
     with open("DO-NOT-DELETE.txt", "r+") as data:
-        found = search(data, account)
-        if not found == "0":
+        if not search(data, account) == "0":
             print("What do you want to update?")
             print("(a) Nickname")
             print("(b) Username")
