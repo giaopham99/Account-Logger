@@ -56,9 +56,11 @@ while command != "q":
         userInput = input("New Password: ")
         updatemaster(userInput, shift)
     elif command == "d":
-        updateshift()
+        userInput = input("New Shift: ")
+        updateshift(userInput)
     elif command == "e":
-        update_account()
+        userInput = input("What account do you want to update?")
+        update_account(userInput)
     elif command == "f":
         listall()
     else:

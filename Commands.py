@@ -66,11 +66,42 @@ def updatemaster(newpass, shift):
             copy.readline()
             data.write(decrypt(newpass, shift) + "\n")  # new pass
             while copy.tell() < end:
-                data.write(copy.readline())
+                data.write(copy.readline())  # copy everything else
 
 
-def updateshift():
-    return 0
+def updateEncryption(code, currentshift, newshift):
+    line = code.split()
+    if currentshift < newshift:
+        if len(line) == 1:
+            return encrypt(code, int(newshift)-int(currentshift)) + "\n"
+        nickname = encrypt(line[0], int(newshift)-int(currentshift))
+        username = encrypt(line[1], int(newshift)-int(currentshift))
+        password = encrypt(line[2], int(newshift)-int(currentshift))
+        return nickname + " " + username + " " + password + "\n"
+    elif currentshift > newshift:
+        if len(line) == 1:
+            return decrypt(code, int(currentshift)-int(newshift)) + "\n"
+        nickname = decrypt(line[0], int(currentshift)-int(newshift))
+        username = decrypt(line[1], int(currentshift)-int(newshift))
+        password = decrypt(line[2], int(currentshift)-int(newshift))
+        return nickname + " " + username + " " + password + "\n"
+
+
+def updateshift(newshift):
+    with open("DO-NOT-DELETE.txt", "r+") as data:
+        with open("TEMP.txt", "w+") as copy:
+            end = findEnd(data)
+            while data.tell() < end:
+                copy.write(data.readline())
+    with open("DO-NOT-DELETE.txt", "w+") as data:
+        with open("TEMP.txt", "r+") as copy:
+            end = findEnd(copy)
+            data.write(newshift + "\n")  # new shift
+            oldshift = copy.readline()
+            while copy.tell() < end:
+                # copy everything else
+                data.write(updateEncryption(
+                    copy.readline().strip("\n"), oldshift, newshift))
 
 
 def search(file, account):
@@ -86,11 +117,9 @@ def search(file, account):
     return "0"
 
 
-def update_account():
+def update_account(account):
     with open("DO-NOT-DELETE.txt", "r+") as data:
-        print("What account do you want to update?")
-        command = input()
-        found = search(data, command)
+        found = search(data, account)
         if not found == "0":
             print("What do you want to update?")
             print("(a) Nickname")
