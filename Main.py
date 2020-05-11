@@ -12,14 +12,18 @@ else:
 
 
 def createshift():
-    newshift = input("Enter a number between 1 and 100: ")
+    newshift = -1
+    while newshift < 0:
+        newshift = int(input("Enter a number between 1 and 100: "))
+        if newshift < 0:
+            print("Invalid shift.")
     with open("DO-NOT-DELETE.txt", "w") as data:
-        data.write(newshift + "\n")
+        data.write(str(newshift) + "\n")
     return newshift
 
 
 def create_master_pass(shift):  # Create a Master Password
-    newpass = input("Enter a master password: ")
+    newpass = input("Enter a master password: ").strip()
     newpass = encrypt(newpass, shift)  # encrypt the master password
     with open("DO-NOT-DELETE.txt", "a") as data:
         data.write(newpass + "\n")
@@ -52,14 +56,21 @@ while command != "q":
         retrieve_account(shift)
     elif command == "b":
         addaccount(shift)
+        print("Account has been added.")
     elif command == "c":
-        userInput = input("New Password: ")
+        userInput = input("New Password: ").strip()
         updatemaster(userInput, shift)
+        print("Master password has been updated.")
     elif command == "d":
-        userInput = input("New Shift: ")
-        updateshift(userInput)
+        newshift = -1
+        while int(newshift) < 0:
+            newshift = input("New Shift: ")
+            if int(newshift) < 0:
+                print("Invalid shift.")
+        updateshift(newshift)
+        print("Shift has been updated.")
     elif command == "e":
-        userInput = input("What account do you want to update?")
+        userInput = input("What account do you want to update? ").strip()
         update_account(userInput)
     elif command == "f":
         listall()
